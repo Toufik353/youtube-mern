@@ -1,0 +1,27 @@
+.videoGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+  margin-top: 40px;
+  box-sizing: border-box;
+}
+
+.videoCardWrapper {
+  flex: 1 1 20%; /* Default: 4 cards per row */
+  max-width: 20%;
+}
+
+@media (max-width: 768px) {
+  .videoCardWrapper {
+    flex: 1 1 50%; /* 2 cards per row */
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .videoCardWrapper {
+    flex: 1 1 100%; /* 1 card per row */
+    max-width: 100%;
+  }
+}

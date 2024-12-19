@@ -1,0 +1,212 @@
+/* Header.module.css */
+.youtubeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.fixedHeader {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+}
+
+.menuIcon {
+  font-size: 28px;
+  cursor: pointer;
+  display: block; /* Ensure it's always visible */
+}
+
+.logo img {
+  height: 20px;
+  margin-left: 30px;
+}
+
+.searchSection {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure full width on mobile */
+  max-width: 500px; /* Limit width for larger screens */
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px;
+  padding-left: 35px; /* Space for the search icon */
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  display: block;
+  box-sizing: border-box;
+}
+
+.searchBtn {
+  position: absolute;
+  left: 10px;
+  background: transparent;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.micBtn {
+  background: transparent;
+  border: none;
+  color: #555;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+}
+
+.iconBtn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.notificationIcon {
+  position: relative;
+}
+
+.notificationCount {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.profile {
+  position: relative;
+}
+
+.userName {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.profileButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 180px;
+  border-radius: 8px;
+}
+
+.dropdownItem {
+  margin-bottom: 8px;
+}
+
+.signOutBtn {
+  background-color: #ff3b30;
+  color: white;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signInBtn {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .searchContainer {
+    width: 100%; /* Ensure it takes up the full width */
+    max-width: none; /* Remove max-width for better responsiveness */
+    padding: 0 10px; /* Add padding to prevent input from touching edges */
+  }
+
+  .searchInput {
+    font-size: 14px; /* Adjust font size for mobile */
+    padding: 8px 10px; /* Adjust padding for mobile */
+    width: 200px;
+  }
+
+  .searchBtn {
+    font-size: 14px;
+  }
+
+  .micBtn {
+    display: none; /* Hide mic icon on mobile */
+  }
+  .iconBtn{
+    display: none;
+  }
+
+  .notificationIcon {
+    display: none; /* Hide notification icon on mobile */
+  }
+
+  .logoSection {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Make logo and search section full width on mobile */
+  }
+
+  .rightSection {
+    display: flex; /* Ensure right section is shown */
+    justify-content: flex-end; /* Align profile and icons to the right */
+    width: auto; /* Let it take the necessary space */
+  }
+
+  .profile {
+    margin-left: 15px; /* Space between search and profile */
+    order: 1; /* Move profile after search bar */
+  }
+}
+
+@media (min-width: 768px) {
+  .rightSection {
+    display: flex;
+  }
+}

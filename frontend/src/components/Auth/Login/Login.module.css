@@ -1,0 +1,131 @@
+/* Container styles for all screen sizes */
+.authContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 20px;
+  box-sizing: border-box;
+    width: 100vw;
+
+}
+
+/* Form box styling */
+.formBox {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/* Title styling */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+/* Form inputs */
+.authForm input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.authForm input:focus {
+  border-color: #0073e6;
+  box-shadow: 0 0 5px rgba(0, 115, 230, 0.2);
+}
+
+/* Submit button */
+.authForm button {
+  width: 100%;
+  background-color: #0073e6;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.authForm button:hover {
+  background-color: #005bb5;
+}
+
+/* Link text */
+p {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+a {
+  color: #0073e6;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+
+/* Tablet (max-width: 768px) */
+@media (max-width: 768px) {
+  .formBox {
+    padding: 30px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .authForm input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .authForm button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .formBox {
+    padding: 20px;
+    border-radius: 5px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .authForm input {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .authForm button {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+}

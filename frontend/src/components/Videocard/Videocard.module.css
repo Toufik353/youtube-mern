@@ -1,0 +1,71 @@
+.videoCard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  text-decoration: none;
+  color: inherit;
+  gap: 12px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.videoCard:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.videoThumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.videoThumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoDuration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.videoInfo {
+  display: flex;
+  gap: 12px;
+}
+
+.channelAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.videoTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.videoChannel {
+  font-size: 14px;
+  color: #606060;
+  margin: 4px 0 0;
+}
+
+.videoStats {
+  font-size: 14px;
+  color: #606060;
+  margin: 0;
+}
