@@ -15,7 +15,9 @@ connectDB()
 
 app.use("/", userRouter)
 
-app.use("/",require("./routers/video.router.js"))
+app.use("/", require("./routers/video.router.js"))
+
+app.use("/",require("./routers/channel.router.js"))
 app.listen(5005, () => {
     console.log('Server is running on port 5005')
 })

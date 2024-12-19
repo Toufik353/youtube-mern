@@ -6,6 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCreateChannelVisible, setCreateChannelVisible] = useState(false);
+  const [channelName, setChannelName] = useState("");
+  const [channelHandle, setChannelHandle] = useState("");
+  const [channelDescription, setChannelDescription] = useState("");
+  const [channelBanner, setChannelBanner] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State to show error message
   const navigate = useNavigate();
 
   // Handle search input change
@@ -22,10 +28,54 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
     navigate("/login");
   };
 
-  // Get user data from localStorage
   const userData = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
     : null;
+
+  const handleCreateChannel = async (e) => {
+    e.preventDefault();
+
+    // Prepare the data to be sent to the backend
+    const channelData = {
+      channelName,
+      channelHandle,
+      description: channelDescription, // Send the description from state
+      channelBanner, // Send the channel banner from state
+    };
+
+    try {
+      const response = await fetch("http://localhost:5005/channel", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify(channelData),
+      });
+
+      if (!response.ok) {
+          const errorData = await response.json();
+          alert(errorData.message)
+                setCreateChannelVisible(false);
+
+        setErrorMessage(errorData.message); // Show error message from response
+        return;
+      }
+
+      const data = await response.json();
+      console.log("data from controller", data);
+
+      // Show success message and redirect
+      alert("Channel created successfully!");
+      navigate(`/channel/${data._id}`);
+
+      // Close the modal
+      setCreateChannelVisible(false);
+    } catch (error) {
+      console.error("Error creating channel:", error);
+      alert("Error creating channel. Please try again.");
+    }
+  };
 
   return (
     <header className={`${styles.youtubeHeader} ${styles.fixedHeader}`}>
@@ -61,6 +111,14 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
           <button className={styles.micBtn}>
             <FaMicrophone />
           </button>
+          {userData && (
+            <button
+              onClick={() => setCreateChannelVisible(true)}
+              className={styles.createChannelBtn}
+            >
+              Create Channel
+            </button>
+          )}
         </div>
       </div>
 
@@ -106,6 +164,84 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
           </Link>
         )}
       </div>
+
+      {/* Create Channel Modal */}
+      {isCreateChannelVisible && (
+        <div className={styles.createChannelModal}>
+          <div className={styles.createChannelFormContainer}>
+            <h2 className={styles.createChannelTitle}>How you'll appear</h2>
+            <div className={styles.avatarSection}>
+              <div className={styles.avatarPlaceholder}>Select picture</div>
+            </div>
+            <form onSubmit={handleCreateChannel} className={styles.createChannelForm}>
+              {errorMessage && (
+                <div className={styles.errorMessage}>{errorMessage}</div> // Show error message if present
+              )}
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter your channel name"
+                  value={channelName}
+                  onChange={(e) => setChannelName(e.target.value)}
+                  required
+                  className={styles.inputField}
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>Handle</label>
+                <input
+                  type="text"
+                  placeholder="@yourhandle"
+                  value={channelHandle}
+                  onChange={(e) => setChannelHandle(e.target.value)}
+                  required
+                  className={styles.inputField}
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>Description</label>
+                <textarea
+                  placeholder="Enter channel description"
+                  value={channelDescription}
+                  onChange={(e) => setChannelDescription(e.target.value)}
+                  required
+                  className={styles.inputField}
+                />
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.inputLabel}>Channel Banner</label>
+                <input
+                  type="url"
+                  placeholder="Enter channel banner URL"
+                  value={channelBanner}
+                  onChange={(e) => setChannelBanner(e.target.value)}
+                  required
+                  className={styles.inputField}
+                />
+              </div>
+              <p className={styles.termsText}>
+                By clicking Create Channel you agree to
+                <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer" className={styles.termsLink}>
+                  YouTube Terms of Service
+                </a>.
+              </p>
+              <div className={styles.buttonGroup}>
+                <button
+                  type="button"
+                  className={styles.cancelBtn}
+                  onClick={() => setCreateChannelVisible(false)}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className={styles.createBtn}>
+                  Create Channel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

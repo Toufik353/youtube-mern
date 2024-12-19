@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa"; // Import icons
+import { FaThumbsUp, FaThumbsDown, FaEdit, FaTrash } from "react-icons/fa"; // Import icons
 import styles from "./VideoPlayer.module.css";
 
 const VideoPlayer = () => {
@@ -8,6 +8,8 @@ const VideoPlayer = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [userLikes, setUserLikes] = useState({ liked: false, disliked: false });
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editText, setEditText] = useState("");
 
   const { _id } = useParams();
 
@@ -15,6 +17,27 @@ const VideoPlayer = () => {
     fetchVideoById();
     fetchComments();
   }, []);
+    
+    function timeSince(dateString) {
+  const now = new Date();
+  const pastDate = new Date(dateString);
+  const differenceInMilliseconds = now - pastDate;
+  
+  const seconds = Math.floor(differenceInMilliseconds / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} day(s) ago`;
+  } else if (hours > 0) {
+    return `${hours} hour(s) ago`;
+  } else if (minutes > 0) {
+    return `${minutes} minute(s) ago`;
+  } else {
+    return `${seconds} second(s) ago`;
+  }
+}
 
   const fetchVideoById = async () => {
     try {
@@ -135,6 +158,41 @@ const VideoPlayer = () => {
     }
   };
 
+  const startEditingComment = (commentId, text) => {
+    setEditingCommentId(commentId);
+    setEditText(text);
+  };
+
+  const handleEditComment = async () => {
+    const token = localStorage.getItem("authToken");
+    const userId = JSON.parse(localStorage.getItem("user"))._id;
+
+    if (editText.trim() === "") return;
+
+    try {
+      const response = await fetch(`http://localhost:5005/videos/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ _id, commentId: editingCommentId, newText: editText }),
+      });
+        const data = await response.json();
+      setComments((prev) =>
+        prev.map((comment) =>
+          comment._id === editingCommentId ? { ...comment, text: data.text } : comment
+        )
+      );
+        fetchComments()
+        
+      setEditingCommentId(null);
+      setEditText("");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (!video) return <div>Loading...</div>;
 
   return (
@@ -189,13 +247,34 @@ const VideoPlayer = () => {
               {comments.length > 0 ? (
                 comments.map((comment) => (
                   <div key={comment._id} className={styles.commentContainer}>
-                    <p>
-                      <strong>{comment.username}</strong> • {comment.time}
-                    </p>
-                    <p>{comment.text}</p>
-                    <button onClick={() => deleteComment(comment._id)} className={styles.deleteButton}>
-                      Delete
-                    </button>
+                    <div className={styles.commentText}>
+                      <p>
+                                <strong>{comment.username}</strong> • {timeSince(comment.time)}
+                      </p>
+                      {editingCommentId === comment._id ? (
+                        <div className={styles.editComment}>
+                          <input
+                            type="text"
+                            value={editText}
+                            onChange={(e) => setEditText(e.target.value)}
+                            className={styles.commentInput}
+                          />
+                          <button onClick={handleEditComment} className={styles.editButton}>
+                            Save
+                          </button>
+                        </div>
+                      ) : (
+                        <p>{comment.text}</p>
+                      )}
+                    </div>
+                    <div className={styles.commentActions}>
+                      <button onClick={() => startEditingComment(comment._id, comment.text)} className={styles.editButton}>
+                        <FaEdit />
+                      </button>
+                      <button onClick={() => deleteComment(comment._id)} className={styles.deleteButton}>
+                        <FaTrash />
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (

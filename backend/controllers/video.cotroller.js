@@ -116,31 +116,27 @@ const deleteComment = async (req, res) => {
 // Edit comment
 const editComment = async (req, res) => {
   try {
-    console.log("req.user from middleware", req.user);
     const { _id, commentId, newText } = req.body; // Extract videoId (_id), commentId, and new text for the comment
     const userId = req.user.user; // Assuming userId is passed in the request (could be from a token or session)
 
-    // Find the video by _id
+      console.log("testing eidt comment", _id,commentId,newText)
     const video = await Video.findById(_id);
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    // Find the comment in the video's comments array
     const commentIndex = video.comments.findIndex((c) => c._id.toString() === commentId);
     if (commentIndex === -1) {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    // Check if the user is the owner of the comment
     const comment = video.comments[commentIndex];
     if (comment.userId.toString() !== userId) {
       return res.status(403).json({ message: "You are not authorized to edit this comment" });
     }
 
-    // Update the comment text
     comment.text = newText;
-    await video.save(); // Save the updated video document
+    await video.save();
 
     res.status(200).json({ message: "Comment updated successfully", comment });
   } catch (err) {

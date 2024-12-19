@@ -6,6 +6,7 @@ import Login from "./components/Auth/Login/Login.jsx";
 import SignUp from "./components/Auth/SignUp/SignUp.jsx";
 import VideoGrid from "./components/VideoGrid/VideoGrid.jsx";
 import VideoPlayer from "./components/VideoPlayer/VideoPlayer.jsx";
+import ChannelPage from "./components/ChannelPage/ChannelPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp />,
+        },
+      {
+          path: "/channel/:channelId",
+          element: <ChannelPage />,
       },
     ],
   },

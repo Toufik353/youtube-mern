@@ -13,8 +13,6 @@ const videoSchema = new mongoose.Schema({
   avatar: { type: String },
   channel: { type: String },
   description: { type: String },
-//   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-//   dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   views: { type: Number, default: 0 },
   publishedTime: { type: Date, default: Date.now },
   comments: [
@@ -23,10 +21,10 @@ const videoSchema = new mongoose.Schema({
           text: String,
       username: String,
       time: { type: Date, default: Date.now },
-    //   likes: { type: Number, default: 0 },
-    //   dislikes: { type: Number, default: 0 },
     },
-  ],
+    ],
+    // channels: { type: mongoose.Schema.Types.ObjectId, ref: 'Channel', required: true },
+
 });
 
 const Video = mongoose.model('Video', videoSchema);
