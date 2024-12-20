@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllVideos, getVideoById,getComments,addComment,deleteComment,likeVideo,dislikeVideo,editComment} = require('../controllers/video.cotroller.js');
+const { getAllVideos, getVideoById,getComments,addComment,deleteComment,likeVideo,dislikeVideo,editComment, fetchLikes} = require('../controllers/video.cotroller.js');
 const {authMiddleware} = require("../middleware/authMiddleware.js")
 const router = express.Router();
 
@@ -21,10 +21,13 @@ router.put('/videos/:id', authMiddleware, editComment);
 
 
 // Like video
-router.post('videos/:id/like',authMiddleware, likeVideo);
+router.post('/videos/:_id/like',authMiddleware, likeVideo);
 
 // Dislike video
-router.post('videos/:id/dislike',authMiddleware, dislikeVideo);
+router.post('/videos/:_id/dislike', authMiddleware, dislikeVideo);
+
+// fetch likes
+router.get('/videos/:_id/likes',authMiddleware, fetchLikes);
 
 
 

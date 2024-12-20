@@ -12,9 +12,13 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />, // App layout with Header and Sidebar
-    children: [
+        children: [
+     {
+        path: "/", 
+        element: <VideoGrid />,
+        },
       {
-        path: "/videos", // Default route
+        path: "/videos", 
         element: <VideoGrid />,
         },
         {

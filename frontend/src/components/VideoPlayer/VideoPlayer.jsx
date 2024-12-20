@@ -9,35 +9,37 @@ const VideoPlayer = () => {
   const [newComment, setNewComment] = useState("");
   const [userLikes, setUserLikes] = useState({ liked: false, disliked: false });
   const [editingCommentId, setEditingCommentId] = useState(null);
-  const [editText, setEditText] = useState("");
+    const [editText, setEditText] = useState("");
+    const [likes,setLikes] = useState(0)
 
   const { _id } = useParams();
 
   useEffect(() => {
     fetchVideoById();
-    fetchComments();
+      fetchComments();
+      fetchLikes()
   }, []);
-    
-    function timeSince(dateString) {
-  const now = new Date();
-  const pastDate = new Date(dateString);
-  const differenceInMilliseconds = now - pastDate;
-  
-  const seconds = Math.floor(differenceInMilliseconds / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
 
-  if (days > 0) {
-    return `${days} day(s) ago`;
-  } else if (hours > 0) {
-    return `${hours} hour(s) ago`;
-  } else if (minutes > 0) {
-    return `${minutes} minute(s) ago`;
-  } else {
-    return `${seconds} second(s) ago`;
+  function timeSince(dateString) {
+    const now = new Date();
+    const pastDate = new Date(dateString);
+    const differenceInMilliseconds = now - pastDate;
+
+    const seconds = Math.floor(differenceInMilliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days} day(s) ago`;
+    } else if (hours > 0) {
+      return `${hours} hour(s) ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute(s) ago`;
+    } else {
+      return `${seconds} second(s) ago`;
+    }
   }
-}
 
   const fetchVideoById = async () => {
     try {
@@ -103,12 +105,29 @@ const VideoPlayer = () => {
       console.error(err);
     }
   };
+    
+    const fetchLikes = async () => {
+        const token = localStorage.getItem("authToken");
+        const response = await fetch(`http://localhost:5005/videos/${_id}/likes`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+        const data = await response.json();
+        console.log("fetch likes", data)
+        setLikes(data);
+    };
+    
 
   const handleLike = async () => {
     if (userLikes.liked) return;
 
     const token = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
+      const userId = JSON.parse(localStorage.getItem("user"))._id;
+      console.log("from video player", userId)
 
     try {
       const response = await fetch(`http://localhost:5005/videos/${_id}/like`, {
@@ -119,12 +138,12 @@ const VideoPlayer = () => {
         },
         body: JSON.stringify({ userId }),
       });
-      const data = await response.json();
+        const data = await response.json();
+        fetchLikes()
       setUserLikes({ liked: true, disliked: userLikes.disliked });
       setVideo((prevVideo) => ({
         ...prevVideo,
         likes: data.likes,
-        dislikes: data.dislikes,
       }));
     } catch (err) {
       console.error(err);
@@ -135,7 +154,7 @@ const VideoPlayer = () => {
     if (userLikes.disliked) return;
 
     const token = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
+      const userId = JSON.parse(localStorage.getItem("user"))._id;
 
     try {
       const response = await fetch(`http://localhost:5005/videos/${_id}/dislike`, {
@@ -147,7 +166,9 @@ const VideoPlayer = () => {
         body: JSON.stringify({ userId }),
       });
       const data = await response.json();
-      setUserLikes({ liked: userLikes.liked, disliked: true });
+        setUserLikes({ liked: userLikes.liked, disliked: true });
+                fetchLikes()
+
       setVideo((prevVideo) => ({
         ...prevVideo,
         likes: data.likes,
@@ -178,16 +199,15 @@ const VideoPlayer = () => {
         },
         body: JSON.stringify({ _id, commentId: editingCommentId, newText: editText }),
       });
-        const data = await response.json();
+      const data = await response.json();
       setComments((prev) =>
         prev.map((comment) =>
           comment._id === editingCommentId ? { ...comment, text: data.text } : comment
         )
       );
-        fetchComments()
-        
       setEditingCommentId(null);
       setEditText("");
+      fetchComments(); // Refresh the comments to reflect the change
     } catch (err) {
       console.error(err);
     }
@@ -217,11 +237,11 @@ const VideoPlayer = () => {
           </div>
           <p className={styles.videoDescription}>{video.description}</p>
           <div className={styles.likeDislikeButtons}>
-            <button className={styles.likeButton} onClick={handleLike}>
-              <FaThumbsUp /> {video.likes}
+            <button className={styles.likeButton} onClick={handleLike} disabled={userLikes.liked}>
+              <FaThumbsUp /> {(likes.likes) || 0}
             </button>
-            <button className={styles.dislikeButton} onClick={handleDislike}>
-              <FaThumbsDown /> {video.dislikes}
+            <button className={styles.dislikeButton} onClick={handleDislike} disabled={userLikes.disliked}>
+              <FaThumbsDown /> {likes.dislikes || 0}
             </button>
           </div>
         </div>
@@ -247,9 +267,9 @@ const VideoPlayer = () => {
               {comments.length > 0 ? (
                 comments.map((comment) => (
                   <div key={comment._id} className={styles.commentContainer}>
-                    <div className={styles.commentText}>
+                    <div key={comment._id} className={styles.commentText}>
                       <p>
-                                <strong>{comment.username}</strong> • {timeSince(comment.time)}
+                        <strong>{comment.username}</strong> • {timeSince(comment.time)}
                       </p>
                       {editingCommentId === comment._id ? (
                         <div className={styles.editComment}>
@@ -268,10 +288,18 @@ const VideoPlayer = () => {
                       )}
                     </div>
                     <div className={styles.commentActions}>
-                      <button onClick={() => startEditingComment(comment._id, comment.text)} className={styles.editButton}>
+                      <button
+                        onClick={() => startEditingComment(comment._id, comment.text)}
+                        className={styles.editButton}
+                        disabled={JSON.parse(localStorage.getItem("user"))._id !== comment.userId}
+                      >
                         <FaEdit />
                       </button>
-                      <button onClick={() => deleteComment(comment._id)} className={styles.deleteButton}>
+                      <button
+                        onClick={() => deleteComment(comment._id)}
+                        className={styles.deleteButton}
+                        disabled={JSON.parse(localStorage.getItem("user"))._id !== comment.userId}
+                      >
                         <FaTrash />
                       </button>
                     </div>

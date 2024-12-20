@@ -440,3 +440,30 @@
 .termsLink:hover {
   text-decoration: underline;
 }
+.createChannelBtn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.createChannelStyle {
+  background-color: #ff0000; /* YouTube Red */
+  color: #fff;
+  border: none;
+}
+
+.createChannelStyle:hover {
+  background-color: #cc0000; /* Darker red */
+}
+
+.myChannelStyle {
+  background-color: #1e90ff; /* Blue for My Channel */
+  color: #fff;
+  border: none;
+}
+
+.myChannelStyle:hover {
+  background-color: #187bcd; /* Darker blue */
+}

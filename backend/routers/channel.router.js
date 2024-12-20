@@ -1,18 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { createChannel, updateChannel, deleteChannel,getChannelById } = require('../controllers/channel.controller.js');
+const { createChannel, updateChannel, getChannelById,getChannelData } = require('../controllers/channel.controller.js');
 const { authMiddleware } = require('../middleware/authMiddleware'); // Middleware to verify user authentication
 
 router.post('/channel', authMiddleware, createChannel);
 
-// Get Channel Details
-router.get('/channel/:channelId',authMiddleware, getChannelById);
-
-// Get Videos
-// router.get('/videos', authMiddleware, getVideosByChannel);
-
-// Get Playlists
-// router.get('/playlists', authMiddleware, getPlaylistsByChannel);
+// Get channels
+router.get('/channel/:channelId', authMiddleware, getChannelById);
 
 
 module.exports = router;

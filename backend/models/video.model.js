@@ -23,7 +23,8 @@ const videoSchema = new mongoose.Schema({
       time: { type: Date, default: Date.now },
     },
     ],
-    // channels: { type: mongoose.Schema.Types.ObjectId, ref: 'Channel', required: true },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 
 });
 

@@ -146,13 +146,14 @@ const editComment = async (req, res) => {
 
 // Like a video
 const likeVideo = async (req, res) => {
-  const { userId } = req.body;
-    const videoId = req.params._id;
-    
-    console.log("test from controller ", userId, videoId)
-
+    console.log("testing from likevideo")
+  const { _id } = req.params;
+    const { userId } = req.body;
+    console.log("userid", userId)
+  
   try {
-    const video = await Video.findById(videoId);
+      const video = await Video.findById(_id);
+      console.log("video found", video)
     if (!video) return res.status(404).json({ message: 'Video not found' });
 
     if (video.likes.includes(userId)) {
@@ -164,37 +165,66 @@ const likeVideo = async (req, res) => {
       video.dislikes.pull(userId); // Remove user ID from dislikes
     }
 
-    await video.save();
-    res.status(200).json(video); // Return updated video data
+      await video.save();
+      
+      console.log("after liking", video)
+    res.status(200).json({ likes: video.likes.length, dislikes: video.dislikes.length }); // Return updated counts
   } catch (err) {
     res.status(500).json({ message: 'Error liking video', error: err });
   }
 };
 
+const fetchLikes = async (req, res) => {
+    const { _id } = req.params;
+    try {
+        const video = await Video.findById(_id);
+        if (!video) return res.status(404).json({
+            message: 'Video not found'
+        });
+        res.status(200).json({
+            likes: (video.likes.length) , dislikes: (video.dislikes.length) 
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching likes', error: err });
+        }
+}
+
 // Dislike a video
 const dislikeVideo = async (req, res) => {
-  const { userId } = req.body;
-  const videoId = req.params._id;
+  console.log("Testing from dislikeVideo");
+  const { _id } = req.params; // Video ID from route parameters
+  const { userId } = req.body; // User ID from request body
+  console.log("UserID:", userId);
 
   try {
-    const video = await Video.findById(videoId);
-    if (!video) return res.status(404).json({ message: 'Video not found' });
+    const video = await Video.findById(_id);
+    console.log("Video found:", video);
 
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    // Check if the user has already disliked the video
     if (video.dislikes.includes(userId)) {
-      return res.status(400).json({ message: 'You have already disliked this video' });
+      return res.status(400).json({ message: "You have already disliked this video" });
     }
 
     video.dislikes.push(userId); // Add user ID to dislikes
+
+    // If the user has previously liked the video, remove the like
     if (video.likes.includes(userId)) {
       video.likes.pull(userId); // Remove user ID from likes
     }
 
     await video.save();
-    res.status(200).json(video); // Return updated video data
+
+    console.log("After disliking:", video);
+
+    // Return the updated likes and dislikes count
+    res.status(200).json({ likes: video.likes.length, dislikes: video.dislikes.length });
   } catch (err) {
-    res.status(500).json({ message: 'Error disliking video', error: err });
+    res.status(500).json({ message: "Error disliking video", error: err });
   }
 };
+
 
 
 
@@ -206,6 +236,7 @@ module.exports = {
     deleteComment,
     editComment,
     likeVideo,
-    dislikeVideo
+    dislikeVideo,
+    fetchLikes
   
 };

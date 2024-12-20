@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaBars, FaSearch, FaMicrophone, FaVideo, FaBell } from "react-icons/fa";
+import React, { useState,useEffect } from "react";
+import { FaBars, FaSearch, FaMicrophone, FaVideo, FaBell ,FaUser , FaPlus} from "react-icons/fa";
 import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,9 +11,16 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
   const [channelHandle, setChannelHandle] = useState("");
   const [channelDescription, setChannelDescription] = useState("");
   const [channelBanner, setChannelBanner] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // State to show error message
-  const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState(""); // State to show error message
+    const [channelData, setChanelData] = useState()
+    const navigate = useNavigate();
+    
 
+    useEffect(() => {
+        // getChannelData()
+    }, []);
+    
+    // console.log("channelData",channelData)
   // Handle search input change
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -64,7 +71,7 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
 
       const data = await response.json();
       console.log("data from controller", data);
-
+setChanelData(data)
       // Show success message and redirect
       alert("Channel created successfully!");
       navigate(`/channel/${data._id}`);
@@ -76,6 +83,32 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
       alert("Error creating channel. Please try again.");
     }
   };
+    
+    const getChannelData = async () => {
+        try {
+            const response = await fetch(`http://localhost:5005/channel/${channelData._id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                },
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(errorData.message)
+                setErrorMessage(errorData.message); // Show error message from response
+                return;
+            }
+            const data = await response.json();
+                console.log("chanel data",data)
+
+            setChanelData(data)
+
+            
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
   return (
     <header className={`${styles.youtubeHeader} ${styles.fixedHeader}`}>
@@ -111,14 +144,31 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
           <button className={styles.micBtn}>
             <FaMicrophone />
           </button>
-          {userData && (
-            <button
-              onClick={() => setCreateChannelVisible(true)}
-              className={styles.createChannelBtn}
-            >
-              Create Channel
-            </button>
-          )}
+         {userData && (
+  <button
+    onClick={() => {
+      if (!userData.channel) {
+        setCreateChannelVisible(true);
+      } else {
+        navigate(`/channel/${userData.channel._id}`);
+      }
+    }}
+    className={`${styles.createChannelBtn} ${
+      userData.channel ? styles.myChannelStyle : styles.createChannelStyle
+    }`}
+  >
+    {userData.channel ? (
+      <>
+        <FaUser /> My Channel
+      </>
+    ) : (
+      <>
+        <FaPlus /> Create Channel
+      </>
+    )}
+  </button>
+)}
+
         </div>
       </div>
 
@@ -143,19 +193,30 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
                 {userData.username.toUpperCase()[0]}
               </button>
 
-              {isDropdownVisible && (
-                <div className={styles.dropdownMenu}>
-                  <div className={styles.dropdownItem}>
-                    <strong>Full Name:</strong> {userData.username || "N/A"}
-                  </div>
-                  <div className={styles.dropdownItem}>
-                    <strong>Email:</strong> {userData.email || "N/A"}
-                  </div>
-                  <button className={styles.signOutBtn} onClick={handleSignOut}>
-                    Log Out
-                  </button>
-                </div>
-              )}
+             {isDropdownVisible && (
+  <div className={styles.dropdownMenu}>
+    <div className={styles.dropdownItem}>
+      <strong>Full Name:</strong> {userData.username || "N/A"}
+    </div>
+    <div className={styles.dropdownItem}>
+      <strong>Email:</strong> {userData.email || "N/A"}
+    </div>
+
+    {/* My Channel Button */}
+      <button
+        className={styles.dropdownItemBtn}
+        onClick={() => navigate(`/channel/${channelData._id}`)}
+      >
+        My Channel
+      </button>
+
+    {/* Sign Out Button */}
+    <button className={styles.signOutBtn} onClick={handleSignOut}>
+      Log Out
+    </button>
+  </div>
+)}
+
             </div>
           </>
         ) : (
