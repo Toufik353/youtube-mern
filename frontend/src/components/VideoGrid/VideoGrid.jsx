@@ -24,7 +24,6 @@ const VideoGrid = () => {
     }
   };
 
-  // Filter videos based on search term
   const filteredVideos = videos.filter((video) =>
     video.title && video.title.toLowerCase().includes(searchTerm.toLowerCase())
   );

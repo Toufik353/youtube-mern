@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Comment Schema for storing user comments
 const commentSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, required: true },
   username: { type: String, required: true },

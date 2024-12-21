@@ -4,18 +4,16 @@ const mongoose = require('mongoose')
 
 // Create a new channel
 const createChannel = async (req, res) => {
+    console.log("testing create channel")
   try {
       const { channelName, description, channelBanner, channelHandle } = req.body;
     const userId = req.user.user;
       
       console.log("testing create channel", channelName,description,channelBanner,channelHandle, userId)
 
-    // Ensure that the user has an `owner` field
     if (!userId) {
       return res.status(403).json({ message: 'User not authenticated' });
     }
-
-    // Check if the user already has a channel
     const existingChannel = await Channel.findOne({ owner: userId });
     if (existingChannel) {
       return res.status(400).json({ message: 'You already have a channel' });
@@ -24,7 +22,7 @@ const createChannel = async (req, res) => {
 
     const channel = new Channel({
       channelName,
-      owner: userId,  // Use the authenticated user's ID
+        owner: userId,
       description,
       channelBanner,
       channelHandle,
@@ -90,13 +88,15 @@ const deleteChannel = async (req, res) => {
 };
 
 const getChannelById = async (req, res) => {
+  console.log("Testing from getChannelById");
+
   try {
-    const { channelId } = req.params; // Get the channelId from the request parameters
-    
-    // Use new ObjectId to correctly instantiate and cast the string to ObjectId
-    // const objectId = mongoose.Types.ObjectId(channelId);
-    
-    const channel = await Channel.findById(channelId);
+      const userId = req.user.user;
+    const objectId =new  mongoose.Types.ObjectId(userId);
+
+    const channel = await Channel.findOne({ owner: objectId });
+
+    console.log("Fetched channel:", channel);
 
     if (!channel) {
       return res.status(404).json({ message: 'Channel not found' });
@@ -107,6 +107,7 @@ const getChannelById = async (req, res) => {
     console.error("Error fetching channel data:", error);
     res.status(500).json({ message: 'Error fetching channel data' });
   }
+
 };
 
 module.exports = { createChannel, updateChannel, deleteChannel ,getChannelById};

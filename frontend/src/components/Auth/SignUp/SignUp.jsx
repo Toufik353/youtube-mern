@@ -27,7 +27,6 @@ const SignUp = () => {
                 body: JSON.stringify({ username, email, password }),
             })
             const data = await response.json();
-            console.log("testing data",data)
             if (response.ok) {
                 alert("User created successfully");
                 navigate("/login");

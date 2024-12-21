@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { FaBars, FaSearch, FaMicrophone, FaVideo, FaBell ,FaUser , FaPlus} from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaBars, FaSearch, FaMicrophone, FaVideo, FaBell, FaUser, FaPlus } from "react-icons/fa";
 import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,25 +10,19 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
   const [channelName, setChannelName] = useState("");
   const [channelHandle, setChannelHandle] = useState("");
   const [channelDescription, setChannelDescription] = useState("");
-  const [channelBanner, setChannelBanner] = useState("");
-    const [errorMessage, setErrorMessage] = useState(""); // State to show error message
-    const [channelData, setChanelData] = useState()
-    const navigate = useNavigate();
-    
+    const [channelBanner, setChannelBanner] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [channelData, setChanelData] = useState();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        // getChannelData()
-    }, []);
-    
-    // console.log("channelData",channelData)
-  // Handle search input change
+  const channelId = localStorage.getItem("channelId");
+
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    onSearch(event.target.value); // Pass search term to parent (App)
+      onSearch(event.target.value);
   };
 
   const handleSignOut = () => {
-    // Clear user data and authentication token
     localStorage.removeItem("user");
     localStorage.removeItem("authToken");
     setDropdownVisible(false);
@@ -39,15 +33,25 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
     ? JSON.parse(localStorage.getItem("user"))
     : null;
 
+  const handleBannerUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+          setChannelBanner(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCreateChannel = async (e) => {
     e.preventDefault();
 
-    // Prepare the data to be sent to the backend
     const channelData = {
       channelName,
       channelHandle,
-      description: channelDescription, // Send the description from state
-      channelBanner, // Send the channel banner from state
+      description: channelDescription,
+        channelBanner,
     };
 
     try {
@@ -61,58 +65,24 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
       });
 
       if (!response.ok) {
-          const errorData = await response.json();
-          alert(errorData.message)
-                setCreateChannelVisible(false);
-
-        setErrorMessage(errorData.message); // Show error message from response
+        const errorData = await response.json();
+        alert(errorData.message);
+        setCreateChannelVisible(false);
+        setErrorMessage(errorData.message);
         return;
       }
 
       const data = await response.json();
-      console.log("data from controller", data);
-setChanelData(data)
-      // Show success message and redirect
       alert("Channel created successfully!");
       navigate(`/channel/${data._id}`);
-
-      // Close the modal
       setCreateChannelVisible(false);
     } catch (error) {
-      console.error("Error creating channel:", error);
       alert("Error creating channel. Please try again.");
     }
   };
-    
-    const getChannelData = async () => {
-        try {
-            const response = await fetch(`http://localhost:5005/channel/${channelData._id}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-                },
-            });
-            if (!response.ok) {
-                const errorData = await response.json();
-                alert(errorData.message)
-                setErrorMessage(errorData.message); // Show error message from response
-                return;
-            }
-            const data = await response.json();
-                console.log("chanel data",data)
-
-            setChanelData(data)
-
-            
-        } catch (err) {
-            console.error(err);
-        }
-    }
 
   return (
     <header className={`${styles.youtubeHeader} ${styles.fixedHeader}`}>
-      {/* Left Section */}
       <div className={styles.logoSection}>
         <button
           className={`${styles.menuIcon} ${styles.visible}`}
@@ -128,7 +98,6 @@ setChanelData(data)
         </div>
       </div>
 
-      {/* Center Search Section */}
       <div className={styles.searchSection}>
         <div className={styles.searchContainer}>
           <input
@@ -144,35 +113,33 @@ setChanelData(data)
           <button className={styles.micBtn}>
             <FaMicrophone />
           </button>
-         {userData && (
-  <button
-    onClick={() => {
-      if (!userData.channel) {
-        setCreateChannelVisible(true);
-      } else {
-        navigate(`/channel/${userData.channel._id}`);
-      }
-    }}
-    className={`${styles.createChannelBtn} ${
-      userData.channel ? styles.myChannelStyle : styles.createChannelStyle
-    }`}
-  >
-    {userData.channel ? (
-      <>
-        <FaUser /> My Channel
-      </>
-    ) : (
-      <>
-        <FaPlus /> Create Channel
-      </>
-    )}
-  </button>
-)}
-
+          {userData && (
+            <button
+              onClick={() => {
+                if (!userData.channel) {
+                  setCreateChannelVisible(true);
+                } else {
+                  navigate(`/channel/${userData.channel._id}`);
+                }
+              }}
+              className={`${styles.baseButton} ${
+                userData.channel ? styles.myChannelStyle : styles.createChannelStyle
+              }`}
+            >
+              {userData.channel ? (
+                <>
+                  <FaUser className={styles.icon} /> My Channel
+                </>
+              ) : (
+                <>
+                  <FaPlus className={styles.icon} /> Create Channel
+                </>
+              )}
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Right Section */}
       <div className={styles.rightSection}>
         {userData ? (
           <>
@@ -192,31 +159,25 @@ setChanelData(data)
               >
                 {userData.username.toUpperCase()[0]}
               </button>
-
-             {isDropdownVisible && (
-  <div className={styles.dropdownMenu}>
-    <div className={styles.dropdownItem}>
-      <strong>Full Name:</strong> {userData.username || "N/A"}
-    </div>
-    <div className={styles.dropdownItem}>
-      <strong>Email:</strong> {userData.email || "N/A"}
-    </div>
-
-    {/* My Channel Button */}
-      <button
-        className={styles.dropdownItemBtn}
-        onClick={() => navigate(`/channel/${channelData._id}`)}
-      >
-        My Channel
-      </button>
-
-    {/* Sign Out Button */}
-    <button className={styles.signOutBtn} onClick={handleSignOut}>
-      Log Out
-    </button>
-  </div>
-)}
-
+              {isDropdownVisible && (
+                <div className={styles.dropdownMenu}>
+                  <div className={styles.dropdownItem}>
+                    <strong>Full Name:</strong> {userData.username || "N/A"}
+                  </div>
+                  <div className={styles.dropdownItem}>
+                    <strong>Email:</strong> {userData.email || "N/A"}
+                  </div>
+                  <button
+                    className={styles.dropdownItemBtn}
+                    onClick={() => navigate(`/channel/${channelId}`)}
+                  >
+                    <FaUser className={styles.icon} /> My Channel
+                  </button>
+                  <button className={styles.signOutBtn} onClick={handleSignOut}>
+                    Log Out
+                  </button>
+                </div>
+              )}
             </div>
           </>
         ) : (
@@ -226,19 +187,38 @@ setChanelData(data)
         )}
       </div>
 
-      {/* Create Channel Modal */}
       {isCreateChannelVisible && (
         <div className={styles.createChannelModal}>
           <div className={styles.createChannelFormContainer}>
             <h2 className={styles.createChannelTitle}>How you'll appear</h2>
-            <div className={styles.avatarSection}>
+            {/* <div className={styles.avatarSection}>
               <div className={styles.avatarPlaceholder}>Select picture</div>
-            </div>
+            </div> */}
             <form onSubmit={handleCreateChannel} className={styles.createChannelForm}>
               {errorMessage && (
-                <div className={styles.errorMessage}>{errorMessage}</div> // Show error message if present
+                <div className={styles.errorMessage}>{errorMessage}</div>
               )}
-              <div className={styles.inputGroup}>
+             <div className={styles.avatarSection}>
+  <label htmlFor="avatarUpload" className={styles.avatarLabel}>
+    {channelBanner ? (
+      <img
+        src={channelBanner}
+        alt="Avatar Preview"
+        className={styles.avatarPreview}
+      />
+    ) : (
+      <div className={styles.avatarPlaceholder}>Select Picture</div>
+    )}
+  </label>
+  <input
+    id="avatarUpload"
+    type="file"
+    accept="image/*"
+    onChange={handleBannerUpload}
+    className={styles.fileInput}
+  />
+                          </div>
+                           <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Name</label>
                 <input
                   type="text"
@@ -270,22 +250,32 @@ setChanelData(data)
                   className={styles.inputField}
                 />
               </div>
-              <div className={styles.inputGroup}>
+              {/* <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Channel Banner</label>
                 <input
-                  type="url"
-                  placeholder="Enter channel banner URL"
-                  value={channelBanner}
-                  onChange={(e) => setChannelBanner(e.target.value)}
-                  required
-                  className={styles.inputField}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerUpload}
+                  className={styles.fileInput}
                 />
-              </div>
+                {channelBanner && (
+                  <img
+                    src={channelBanner}
+                    alt="Banner Preview"
+                    className={styles.bannerPreview}
+                  />
+                )}
+              </div> */}
               <p className={styles.termsText}>
                 By clicking Create Channel you agree to
-                <a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer" className={styles.termsLink}>
+                <a
+                  href="https://www.youtube.com/t/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.termsLink}
+                >
                   YouTube Terms of Service
-                </a>.
+                </a>
               </p>
               <div className={styles.buttonGroup}>
                 <button

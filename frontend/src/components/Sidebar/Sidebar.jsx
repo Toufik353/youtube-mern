@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./Sidebar.module.css";
 import { Link } from "react-router-dom";
-import { FaHome, FaFire, FaListAlt, FaHistory, FaClock, FaThumbsUp } from "react-icons/fa"; // Importing icons
-
+import { FaHome, FaFire, FaListAlt, FaHistory, FaClock, FaThumbsUp } from "react-icons/fa";
 const Sidebar = ({ isOpen = true, toggleSidebar }) => {
   return (
     <aside

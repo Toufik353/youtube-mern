@@ -9,13 +9,11 @@ const VideoCard = ({ video }) => {
 
   return (
     <Link to={`/videos/${_id}`} className={styles.videoCard}>
-      {/* Thumbnail */}
       <div className={styles.videoThumbnail}>
         <img src={thumbnailUrl} alt={title} />
         <span className={styles.videoDuration}>{duration}</span>
       </div>
 
-      {/* Video Info */}
       <div className={styles.videoInfo}>
         <img src={avatar} alt="Channel Avatar" className={styles.channelAvatar} />
         <div>

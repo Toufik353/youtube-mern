@@ -1,4 +1,3 @@
-/* Container styles for all screen sizes */
 .authContainer {
   display: flex;
   justify-content: center;
@@ -9,8 +8,6 @@
   box-sizing: border-box;
   width: 100vw;
 }
-
-/* Form box styling */
 .formBox {
   background-color: #fff;
   padding: 40px;
@@ -21,7 +18,6 @@
   box-sizing: border-box;
 }
 
-/* Title styling */
 h2 {
   text-align: center;
   margin-bottom: 20px;
@@ -29,7 +25,6 @@ h2 {
   font-size: 1.8rem;
 }
 
-/* Form inputs */
 .authForm input {
   width: 100%;
   margin: 10px 0;
@@ -46,7 +41,6 @@ h2 {
   box-shadow: 0 0 5px rgba(0, 115, 230, 0.2);
 }
 
-/* Submit button */
 .authForm button {
   width: 100%;
   background-color: #0073e6;
@@ -62,14 +56,11 @@ h2 {
 .authForm button:hover {
   background-color: #005bb5;
 }
-
-/* Link text */
 p {
   text-align: center;
   margin-top: 10px;
   font-size: 14px;
 }
-
 a {
   color: #0073e6;
   text-decoration: none;
@@ -79,9 +70,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Responsive Design */
-
-/* Tablet (max-width: 768px) */
 @media (max-width: 768px) {
   .formBox {
     padding: 30px;
@@ -102,7 +90,6 @@ a:hover {
   }
 }
 
-/* Mobile (max-width: 480px) */
 @media (max-width: 480px) {
   .formBox {
     padding: 20px;

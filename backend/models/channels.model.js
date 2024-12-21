@@ -9,7 +9,7 @@ const channelSchema = new mongoose.Schema({
   channelBanner: { type: String, required: true },
   subscribers: { type: Number, default: 0 },
     videos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Video' }],
-    channelId: { type: String, unique: true, default: uuidv4 }, // Generate a unique channelId
+    channelId: { type: String, unique: true, default: uuidv4 },
 
 });
 

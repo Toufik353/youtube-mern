@@ -8,20 +8,20 @@
 }
 
 .videoCardWrapper {
-  flex: 1 1 20%; /* Default: 4 cards per row */
+  flex: 1 1 20%;
   max-width: 20%;
 }
 
 @media (max-width: 768px) {
   .videoCardWrapper {
-    flex: 1 1 50%; /* 2 cards per row */
+    flex: 1 1 50%; 
     max-width: 50%;
   }
 }
 
 @media (max-width: 480px) {
   .videoCardWrapper {
-    flex: 1 1 100%; /* 1 card per row */
+    flex: 1 1 100%;
     max-width: 100%;
   }
 }

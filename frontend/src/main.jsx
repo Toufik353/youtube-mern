@@ -11,7 +11,7 @@ import ChannelPage from "./components/ChannelPage/ChannelPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // App layout with Header and Sidebar
+        element: <App />,
         children: [
      {
         path: "/", 

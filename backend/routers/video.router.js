@@ -19,7 +19,6 @@ router.delete("/videos/:_id", authMiddleware, deleteComment);
 // Edit comment
 router.put('/videos/:id', authMiddleware, editComment);
 
-
 // Like video
 router.post('/videos/:_id/like',authMiddleware, likeVideo);
 

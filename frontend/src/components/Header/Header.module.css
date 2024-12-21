@@ -1,4 +1,3 @@
-/* Header.module.css */
 .youtubeHeader {
   display: flex;
   justify-content: space-between;
@@ -24,7 +23,7 @@
 .menuIcon {
   font-size: 28px;
   cursor: pointer;
-  display: block; /* Ensure it's always visible */
+  display: block; 
 }
 
 .logo img {
@@ -43,14 +42,14 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%; /* Ensure full width on mobile */
-  max-width: 500px; /* Limit width for larger screens */
+  width: 100%;
+  max-width: 500px; 
 }
 
 .searchInput {
   width: 100%;
   padding: 10px;
-  padding-left: 35px; /* Space for the search icon */
+  padding-left: 35px; 
   border-radius: 20px;
   border: 1px solid #ccc;
   font-size: 14px;
@@ -158,17 +157,16 @@
   cursor: pointer;
 }
 
-/* Mobile adjustments */
 @media (max-width: 768px) {
   .searchContainer {
-    width: 100%; /* Ensure it takes up the full width */
-    max-width: none; /* Remove max-width for better responsiveness */
-    padding: 0 10px; /* Add padding to prevent input from touching edges */
+    width: 100%; 
+    max-width: none;
+    padding: 0 10px; 
   }
 
   .searchInput {
-    font-size: 14px; /* Adjust font size for mobile */
-    padding: 8px 10px; /* Adjust padding for mobile */
+    font-size: 14px; 
+    padding: 8px 10px; 
     width: 200px;
   }
 
@@ -177,31 +175,31 @@
   }
 
   .micBtn {
-    display: none; /* Hide mic icon on mobile */
+    display: none;
   }
   .iconBtn{
     display: none;
   }
 
   .notificationIcon {
-    display: none; /* Hide notification icon on mobile */
+    display: none;
   }
 
   .logoSection {
     display: flex;
     justify-content: space-between;
-    width: 100%; /* Make logo and search section full width on mobile */
+    width: 100%;
   }
 
   .rightSection {
-    display: flex; /* Ensure right section is shown */
-    justify-content: flex-end; /* Align profile and icons to the right */
-    width: auto; /* Let it take the necessary space */
+    display: flex; 
+    justify-content: flex-end; 
+    width: auto; 
   }
 
   .profile {
-    margin-left: 15px; /* Space between search and profile */
-    order: 1; /* Move profile after search bar */
+    margin-left: 15px; 
+    order: 1; 
   }
 }
 
@@ -210,9 +208,7 @@
     display: flex;
   }
 }
-/* Header.module.css */
 
-/* Style the modal overlay */
 .createChannelModal {
   position: fixed;
   top: 0;
@@ -223,10 +219,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Ensure modal is on top */
+  z-index: 9999; 
 }
 
-/* Style the modal box */
 .createChannelForm {
   background-color: #fff;
   padding: 20px;
@@ -236,7 +231,6 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Style the title */
 .createChannelForm h2 {
   text-align: center;
   font-size: 1.5em;
@@ -244,7 +238,6 @@
   color: #333;
 }
 
-/* Style the form input fields */
 .inputGroup {
   margin-bottom: 15px;
 }
@@ -263,7 +256,6 @@
   outline: none;
 }
 
-/* Style the buttons */
 .createChannelBtnSubmit {
   width: 100%;
   padding: 12px;
@@ -280,7 +272,6 @@
   background-color: #0056b3;
 }
 
-/* Close button style */
 .closeBtn {
   width: 100%;
   padding: 10px;
@@ -295,7 +286,6 @@
 .closeBtn:hover {
   background-color: #d32f2f;
 }
-/* Modal container */
 .createChannelModal {
   position: fixed;
   top: 0;
@@ -309,7 +299,6 @@
   z-index: 1000;
 }
 
-/* Modal form container */
 .createChannelFormContainer {
   background: #fff;
   padding: 20px;
@@ -319,14 +308,12 @@
   position: relative;
 }
 
-/* Modal header */
 .createChannelTitle {
   font-size: 24px;
   margin-bottom: 20px;
   text-align: center;
 }
 
-/* Avatar section */
 .avatarSection {
   display: flex;
   justify-content: center;
@@ -346,7 +333,6 @@
   color: #999;
 }
 
-/* Input group styling */
 .inputGroup {
   margin-bottom: 15px;
 }
@@ -372,7 +358,6 @@
   border-color: #007bff;
 }
 
-/* Text area for description */
 .textareaField {
   width: 100%;
   padding: 10px;
@@ -389,7 +374,6 @@
   border-color: #007bff;
 }
 
-/* Button group styling */
 .buttonGroup {
   display: flex;
   justify-content: space-between;
@@ -449,21 +433,89 @@
 }
 
 .createChannelStyle {
-  background-color: #ff0000; /* YouTube Red */
+  background-color: #ff0000; 
   color: #fff;
   border: none;
 }
 
 .createChannelStyle:hover {
-  background-color: #cc0000; /* Darker red */
+  background-color: #cc0000; 
 }
 
 .myChannelStyle {
-  background-color: #1e90ff; /* Blue for My Channel */
+  background-color: #1e90ff; 
   color: #fff;
   border: none;
 }
 
 .myChannelStyle:hover {
-  background-color: #187bcd; /* Darker blue */
+  background-color: #187bcd; 
+}
+.dropdownItemBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333; 
+  background-color: transparent; 
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdownItemBtn:hover {
+  background-color: #f0f0f0;
+  color: #007bff; 
+}
+
+.dropdownItemBtn:active {
+  background-color: #e0e0e0; 
+}
+
+.icon {
+  font-size: 18px;
+  color: #007bff; 
+  transition: color 0.3s ease;
+}
+
+.dropdownItemBtn:hover .icon {
+  color: #0056b3;
+}
+.avatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.avatarLabel {
+  width: 120px; 
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f0f0f0;
+  border: 2px solid #ddd;
+}
+
+.avatarPlaceholder {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+}
+
+.avatarPreview {
+  width: 100%;
+  height: 100%; 
+  object-fit: cover;
+}
+
+.fileInput {
+  display: none; 
 }

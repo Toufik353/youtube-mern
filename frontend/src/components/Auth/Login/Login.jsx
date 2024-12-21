@@ -31,7 +31,6 @@ const Login = ({ setUser }) => {
               
         })
         const data = await response.json();
-        console.log(data)
         if (response.ok) {
             localStorage.setItem("authToken", data.token)
             localStorage.setItem("user",JSON.stringify(data.user))

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { FaThumbsUp, FaThumbsDown, FaEdit, FaTrash } from "react-icons/fa"; // Import icons
+import { FaThumbsUp, FaThumbsDown, FaEdit, FaTrash } from "react-icons/fa";
 import styles from "./VideoPlayer.module.css";
 
 const VideoPlayer = () => {
@@ -117,7 +117,6 @@ const VideoPlayer = () => {
                 },
             });
         const data = await response.json();
-        console.log("fetch likes", data)
         setLikes(data);
     };
     
@@ -127,7 +126,6 @@ const VideoPlayer = () => {
 
     const token = localStorage.getItem("authToken");
       const userId = JSON.parse(localStorage.getItem("user"))._id;
-      console.log("from video player", userId)
 
     try {
       const response = await fetch(`http://localhost:5005/videos/${_id}/like`, {
