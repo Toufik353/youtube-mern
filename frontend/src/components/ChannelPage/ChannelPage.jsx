@@ -15,7 +15,7 @@ const ChannelPage = () => {
 
   const fetchChannelData = async () => {
     try {
-      const channelResponse = await fetch(`http://localhost:5005/channel/${channelId}`, {
+      const channelResponse = await fetch(`https://youtube-mern-backend-api.onrender.com/channel/${channelId}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -34,9 +34,10 @@ const ChannelPage = () => {
 
       const channelData = await channelResponse.json();
       localStorage.setItem('channelId', channelData._id);
-      setChannelData(channelData);
+        setChannelData(channelData);
+        console.log("channel Data",channelData)
 
-      const videosResponse = await fetch(`http://localhost:5005/videos?channelId=${channelId}`, {
+      const videosResponse = await fetch(`https://youtube-mern-backend-api.onrender.com/videos?channelId=${channelId}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -48,7 +49,10 @@ const ChannelPage = () => {
       }
 
       const videoData = await videosResponse.json();
-      setVideos(videoData);
+
+      // Filter videos to only include those that belong to the current channel/user
+      const filteredVideos = videoData.filter(video => video.uploader === channelData.owner);
+      setVideos(filteredVideos);
       setLoading(false);
     } catch (error) {
       setError(error.message);
@@ -88,18 +92,22 @@ const ChannelPage = () => {
           <div className={styles.videos}>
             <h3>Videos</h3>
             <div className={styles.videoList}>
-              {videos.map((video) => (
-                <div key={video._id} className={styles.videoCard}>
-                  <Link to={`/video/${video._id}`}>
-                    <img src={video.thumbnailUrl} alt={video.title} />
-                    <h4>{video.title}</h4>
-                    <p>
-                      {video.views} views •{' '}
-                      {new Date(video.uploadDate).toLocaleDateString()}
-                    </p>
-                  </Link>
-                </div>
-              ))}
+              {videos.length > 0 ? (
+                videos.map((video) => (
+                  <div key={video._id} className={styles.videoCard}>
+                    <Link to={`/video/${video._id}`}>
+                      <img src={video.thumbnailUrl} alt={video.title} />
+                      <h4>{video.title}</h4>
+                      <p>
+                        {video.views} views •{' '}
+                        {new Date(video.uploadDate).toLocaleDateString()}
+                      </p>
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p>No videos found for this channel.</p>
+              )}
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchVideos = async () => {
-      const response = await fetch('http://localhost:5005/videos');
+      const response = await fetch('https://youtube-mern-backend-api.onrender.com/videos');
       const data = await response.json();
       setVideos(data);
     };

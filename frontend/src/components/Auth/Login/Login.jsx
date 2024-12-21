@@ -22,7 +22,7 @@ const Login = ({ setUser }) => {
             return
         }
     
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+        const response = await fetch("https://youtube-mern-backend-api.onrender.com/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

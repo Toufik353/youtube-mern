@@ -54,7 +54,7 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:5005/channel", {
+      const response = await fetch("https://youtube-mern-backend-api.onrender.com/channel", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

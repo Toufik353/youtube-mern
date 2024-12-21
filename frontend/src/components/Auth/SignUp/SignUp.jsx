@@ -19,7 +19,7 @@ const SignUp = () => {
         e.preventDefault()
         const { username, email, password } = formData;
         if (username && email && password) {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/signup`, {
+            const response = await fetch("https://youtube-mern-backend-api.onrender.com/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

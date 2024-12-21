@@ -43,7 +43,7 @@ const VideoPlayer = () => {
 
   const fetchVideoById = async () => {
     try {
-      const response = await fetch(`http://localhost:5005/videos/${_id}`);
+      const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}`);
       const data = await response.json();
       setVideo(data);
     } catch (err) {
@@ -53,7 +53,7 @@ const VideoPlayer = () => {
 
   const fetchComments = async () => {
     try {
-      const response = await fetch(`http://localhost:5005/videos/${_id}`);
+      const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}`);
       const data = await response.json();
       setComments(Array.isArray(data.comments) ? data.comments : []);
     } catch (err) {
@@ -69,7 +69,7 @@ const VideoPlayer = () => {
     if (newComment.trim() === "") return;
 
     try {
-      const response = await fetch(`http://localhost:5005/videos/${_id}`, {
+      const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ const VideoPlayer = () => {
     const token = localStorage.getItem("authToken");
 
     try {
-      const response = await fetch(`http://localhost:5005/videos/${_id}`, {
+      const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +108,7 @@ const VideoPlayer = () => {
     
     const fetchLikes = async () => {
         const token = localStorage.getItem("authToken");
-        const response = await fetch(`http://localhost:5005/videos/${_id}/likes`,
+        const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}/likes`,
             {
                 method: "GET",
                 headers: {
@@ -128,7 +128,7 @@ const VideoPlayer = () => {
       const userId = JSON.parse(localStorage.getItem("user"))._id;
 
     try {
-      const response = await fetch(`http://localhost:5005/videos/${_id}/like`, {
+      const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}/like`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -155,7 +155,7 @@ const VideoPlayer = () => {
       const userId = JSON.parse(localStorage.getItem("user"))._id;
 
     try {
-      const response = await fetch(`http://localhost:5005/videos/${_id}/dislike`, {
+      const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}/dislike`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -189,7 +189,7 @@ const VideoPlayer = () => {
     if (editText.trim() === "") return;
 
     try {
-      const response = await fetch(`http://localhost:5005/videos/${_id}`, {
+      const response = await fetch(`https://youtube-mern-backend-api.onrender.com/videos/${_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
