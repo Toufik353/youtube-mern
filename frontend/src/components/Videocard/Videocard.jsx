@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./VideoCard.module.css";
+import styles from "./Videocard.module.css";
 
 const VideoCard = ({ video }) => {
     const { _id, thumbnailUrl, title, channel, avatar, views, duration, publishedTime } = video;
