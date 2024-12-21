@@ -144,7 +144,6 @@ body {
   background-color: darkred;
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   .videoIframe {
     height: 250px;

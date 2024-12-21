@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Sidebar.module.css";
 import { Link } from "react-router-dom";
 import { FaHome, FaFire, FaListAlt, FaHistory, FaClock, FaThumbsUp } from "react-icons/fa";
+
 const Sidebar = ({ isOpen = true, toggleSidebar }) => {
   return (
     <aside
@@ -9,11 +10,10 @@ const Sidebar = ({ isOpen = true, toggleSidebar }) => {
     >
       <ul className={styles.sidebarMenu}>
         <li>
-                  <Link to="videos" className={styles.iconLink}>
+          <Link to="/videos" className={styles.iconLink}>
             <FaHome size={24} />
-                      <Link to="/videos"></Link>
+            {isOpen && <span>Home</span>}
           </Link>
-          {isOpen && <Link to="/videos"><span>Home</span></Link>}
         </li>
         <li>
           <FaFire size={24} />

@@ -4,12 +4,10 @@ const mongoose = require('mongoose')
 
 // Create a new channel
 const createChannel = async (req, res) => {
-    console.log("testing create channel")
   try {
       const { channelName, description, channelBanner, channelHandle } = req.body;
     const userId = req.user.user;
       
-      console.log("testing create channel", channelName,description,channelBanner,channelHandle, userId)
 
     if (!userId) {
       return res.status(403).json({ message: 'User not authenticated' });
@@ -18,7 +16,6 @@ const createChannel = async (req, res) => {
     if (existingChannel) {
       return res.status(400).json({ message: 'You already have a channel' });
     }
-
 
     const channel = new Channel({
       channelName,
@@ -30,7 +27,6 @@ const createChannel = async (req, res) => {
 
       await channel.save();
       
-      console.log("testing created channel",channel)
     res.status(201).json(channel);
   } catch (error) {
     console.error("Error creating channel:", error);
@@ -96,7 +92,6 @@ const getChannelById = async (req, res) => {
 
     const channel = await Channel.findOne({ owner: objectId });
 
-    console.log("Fetched channel:", channel);
 
     if (!channel) {
       return res.status(404).json({ message: 'Channel not found' });

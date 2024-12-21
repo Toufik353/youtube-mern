@@ -1,5 +1,5 @@
 .channelPage {
-  padding: 40px;
+  padding: 20px;
   background-color: #f9f9f9;
   display: flex;
   flex-direction: column;
@@ -19,6 +19,7 @@
   padding: 20px;
   text-align: center;
   padding-top: 70px;
+  margin-bottom: 20px;
 }
 
 .banner {
@@ -38,9 +39,11 @@
 
 .profile {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   margin-top: -50px;
+  gap: 20px;
 }
 
 .avatarPlaceholder {
@@ -65,8 +68,9 @@
 .channelInfo {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  max-width: 60%;
+  align-items: center;
+  max-width: 100%;
+  margin-top: 10px;
 }
 
 h2 {
@@ -100,10 +104,11 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: center;
 }
 
 .videoCard {
-  width: calc(33.333% - 20px);
+  width: calc(100% - 20px); 
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
@@ -125,8 +130,113 @@ h4 {
   margin: 10px 0;
 }
 
-p {
+.videoCard p {
   font-size: 14px;
   color: #777;
   margin: 5px 0;
+}
+
+@media (min-width: 600px) {
+  .profile {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .avatarPlaceholder {
+    width: 140px;
+    height: 140px;
+  }
+
+  .channelInfo {
+    align-items: flex-start;
+    max-width: 80%;
+  }
+
+  .videoCard {
+    width: calc(50% - 20px); 
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .stats p {
+    font-size: 15px;
+  }
+
+  .videoCard h4 {
+    font-size: 18px;
+  }
+
+  .videoCard p {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .channelDetails {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .profile {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .avatarPlaceholder {
+    width: 150px;
+    height: 150px;
+  }
+
+  .channelInfo {
+    max-width: 60%;
+  }
+
+  .videoCard {
+    width: calc(33.333% - 20px); 
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .stats p {
+    font-size: 16px;
+  }
+
+  .videoCard h4 {
+    font-size: 20px;
+  }
+
+  .videoCard p {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .channelDetails {
+    max-width: 1300px;
+  }
+
+  .videoCard {
+    width: calc(25% - 20px); 
+  }
+
+  .profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+  }
+
+  h2 {
+    font-size: 30px;
+  }
+
+  .stats p {
+    font-size: 18px;
+  }
 }

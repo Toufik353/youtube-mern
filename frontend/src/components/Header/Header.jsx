@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaBars, FaSearch, FaMicrophone, FaVideo, FaBell, FaUser, FaPlus } from "react-icons/fa";
 import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,16 +10,15 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
   const [channelName, setChannelName] = useState("");
   const [channelHandle, setChannelHandle] = useState("");
   const [channelDescription, setChannelDescription] = useState("");
-    const [channelBanner, setChannelBanner] = useState(null);
+  const [channelBanner, setChannelBanner] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [channelData, setChanelData] = useState();
   const navigate = useNavigate();
 
   const channelId = localStorage.getItem("channelId");
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-      onSearch(event.target.value);
+    onSearch(event.target.value);
   };
 
   const handleSignOut = () => {
@@ -38,7 +37,7 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-          setChannelBanner(reader.result);
+        setChannelBanner(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -51,7 +50,7 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
       channelName,
       channelHandle,
       description: channelDescription,
-        channelBanner,
+      channelBanner,
     };
 
     try {
@@ -113,30 +112,6 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
           <button className={styles.micBtn}>
             <FaMicrophone />
           </button>
-          {userData && (
-            <button
-              onClick={() => {
-                if (!userData.channel) {
-                  setCreateChannelVisible(true);
-                } else {
-                  navigate(`/channel/${userData.channel._id}`);
-                }
-              }}
-              className={`${styles.baseButton} ${
-                userData.channel ? styles.myChannelStyle : styles.createChannelStyle
-              }`}
-            >
-              {userData.channel ? (
-                <>
-                  <FaUser className={styles.icon} /> My Channel
-                </>
-              ) : (
-                <>
-                  <FaPlus className={styles.icon} /> Create Channel
-                </>
-              )}
-            </button>
-          )}
         </div>
       </div>
 
@@ -167,6 +142,15 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
                   <div className={styles.dropdownItem}>
                     <strong>Email:</strong> {userData.email || "N/A"}
                   </div>
+                  {/* Create Channel Button in Dropdown */}
+                  {!userData.channel && (
+                    <button
+                      onClick={() => setCreateChannelVisible(true)}
+                      className={styles.dropdownItemBtn}
+                    >
+                      <FaPlus className={styles.icon} /> Create Channel
+                    </button>
+                  )}
                   <button
                     className={styles.dropdownItemBtn}
                     onClick={() => navigate(`/channel/${channelId}`)}
@@ -191,34 +175,31 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
         <div className={styles.createChannelModal}>
           <div className={styles.createChannelFormContainer}>
             <h2 className={styles.createChannelTitle}>How you'll appear</h2>
-            {/* <div className={styles.avatarSection}>
-              <div className={styles.avatarPlaceholder}>Select picture</div>
-            </div> */}
             <form onSubmit={handleCreateChannel} className={styles.createChannelForm}>
               {errorMessage && (
                 <div className={styles.errorMessage}>{errorMessage}</div>
               )}
-             <div className={styles.avatarSection}>
-  <label htmlFor="avatarUpload" className={styles.avatarLabel}>
-    {channelBanner ? (
-      <img
-        src={channelBanner}
-        alt="Avatar Preview"
-        className={styles.avatarPreview}
-      />
-    ) : (
-      <div className={styles.avatarPlaceholder}>Select Picture</div>
-    )}
-  </label>
-  <input
-    id="avatarUpload"
-    type="file"
-    accept="image/*"
-    onChange={handleBannerUpload}
-    className={styles.fileInput}
-  />
-                          </div>
-                           <div className={styles.inputGroup}>
+              <div className={styles.avatarSection}>
+                <label htmlFor="avatarUpload" className={styles.avatarLabel}>
+                  {channelBanner ? (
+                    <img
+                      src={channelBanner}
+                      alt="Avatar Preview"
+                      className={styles.avatarPreview}
+                    />
+                  ) : (
+                    <div className={styles.avatarPlaceholder}>Select Picture</div>
+                  )}
+                </label>
+                <input
+                  id="avatarUpload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerUpload}
+                  className={styles.fileInput}
+                />
+              </div>
+              <div className={styles.inputGroup}>
                 <label className={styles.inputLabel}>Name</label>
                 <input
                   type="text"
@@ -250,22 +231,6 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
                   className={styles.inputField}
                 />
               </div>
-              {/* <div className={styles.inputGroup}>
-                <label className={styles.inputLabel}>Channel Banner</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBannerUpload}
-                  className={styles.fileInput}
-                />
-                {channelBanner && (
-                  <img
-                    src={channelBanner}
-                    alt="Banner Preview"
-                    className={styles.bannerPreview}
-                  />
-                )}
-              </div> */}
               <p className={styles.termsText}>
                 By clicking Create Channel you agree to
                 <a
