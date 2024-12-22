@@ -201,7 +201,7 @@ git push origin feature-name
 
 Open a pull request.
 
-Hostet Link : https://youtube-mern-frontned.onrender.com/
+Hosted Link : https://youtube-mern-frontned.onrender.com/
 
 Backend Hosted API's : https://youtube-mern-backend-api.onrender.com/
 
