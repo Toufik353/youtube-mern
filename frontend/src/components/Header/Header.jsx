@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaBars, FaSearch, FaMicrophone, FaVideo, FaBell, FaUser, FaPlus } from "react-icons/fa";
 import styles from "./Header.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import imageCompression from "browser-image-compression";
+
 
 const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -32,14 +34,22 @@ const Header = ({ toggleSidebar, onSignOut, onSearch }) => {
     ? JSON.parse(localStorage.getItem("user"))
     : null;
 
-  const handleBannerUpload = (event) => {
+ const handleBannerUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setChannelBanner(reader.result);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        const compressedImageDataUrl = await imageCompression.getDataUrlFromFile(compressedFile);
+        setChannelBanner(compressedImageDataUrl);
+      } catch (error) {
+        console.error("Error compressing the image: ", error);
+        setErrorMessage("Failed to upload and compress image. Please try again.");
+      }
     }
   };
 
